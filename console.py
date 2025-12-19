@@ -9,4 +9,5 @@ def print_menu() -> None:
   1. Scarica follower
   2. Restituisci statistiche
   3. Guarda i dati di un giorno specifico
+  4. Controlla a che ora è stato creato il record
   """)

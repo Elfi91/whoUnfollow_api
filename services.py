@@ -1,9 +1,20 @@
 import json
 from requests import Response, RequestException
-from config import base_url
+from client_gemini import get_stat_from_gemini
 from client_github import fetch_users
-from repository import create_record, save_json_db
+from config import base_url
 import re
+from repository import create_record, save_json_db, get_data_from_db
+
+def get_last_record_time() -> str:
+    "Recupera l'orario di creazione dell'ultimo record salvato."
+    db_content = get_data_from_db("db/db.json")
+
+    if not db_content:
+        return "Nessun record trovato nel database"
+    
+    ultimo_record = db_content[-1]
+    return f"Record creato il: {ultimo_record["creationAt"]}"
 
 def extract_usernames(users: list[dict]) -> list[str]:
     usernames: list[str] = []
@@ -81,4 +92,10 @@ def get_followers() -> None:
         print(f"Errore nel database: {e}")
     except OSError as e:
         print(f"Errore file system: {e}")
+
+
+def get_statistiche() -> None:
+    print("Hai scelto di prendere le statistiche")
+    db_content = get_data_from_db("db/db.json")
+    get_stat_from_gemini(db_content)
 

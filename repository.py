@@ -2,11 +2,15 @@ import json
 import datetime
 import uuid
 import os
+from zoneinfo import ZoneInfo
 
 def create_record(usernames: list[str]) -> dict:
     """Crea l'oggetto record da salvare nel db"""
-    now_utc = datetime.datetime.now(datetime.timezone.utc)
-    clean_date = now_utc.isoformat(timespec='milliseconds').replace('+00:00', 'Z')
+    now_cet = datetime.datetime.now(ZoneInfo("Europe/Rome"))
+    clean_date = now_cet.strftime("%d/%m/%Y %H:%M:%S") 
+
+    #now_utc = datetime.datetime.now(datetime.timezone.utc)
+    #clean_date = now_utc.isoformat(timespec='milliseconds').replace('+00:00', 'Z')
     return {
         'id' : str(uuid.uuid4()),
         'creationAt' : clean_date,
@@ -31,7 +35,14 @@ def check_if_json_db_has_correct_shape(db_name: str) -> bool:
     with open(db_name, "r") as f:
         data = json.load(f)
         return isinstance(data, list)
-        
+
+def get_data_from_db(db_name: str) -> list[dict]:
+    """Prende tutto il contenuto del db"""
+    if not check_if_json_db_has_correct_shape(db_name):
+        create_json_db(db_name)
+
+    with open(db_name, "r") as f:
+        return json.load(f)
 
 def save_json_db(db_name: str, new_value: dict) -> None:
     """Salva il nuovo oggetto nel db."""
