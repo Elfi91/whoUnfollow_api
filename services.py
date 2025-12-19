@@ -14,7 +14,7 @@ def get_last_record_time() -> str:
         return "Nessun record trovato nel database"
     
     ultimo_record = db_content[-1]
-    return f"Record creato il: {ultimo_record["creationAt"]}"
+    return f"Record creato il: {ultimo_record['creationAt']}"
 
 def extract_usernames(users: list[dict]) -> list[str]:
     usernames: list[str] = []
@@ -80,11 +80,11 @@ def get_followers() -> None:
             return
 
         data = get_all_follower_from_pages(username)
-        username = extract_usernames(data)
-        record = create_record(username)
+        username_list = extract_usernames(data)
+        record = create_record(username_list)
         save_json_db("db/db.json", record)
 
-        print(f"Salvati {len(username)} follower!")
+        print(f"Salvati {len(username_list)} follower!")
 
     except RequestException as e:
         print(f"Errore di connessione: {e}")
@@ -98,4 +98,3 @@ def get_statistiche() -> None:
     print("Hai scelto di prendere le statistiche")
     db_content = get_data_from_db("db/db.json")
     get_stat_from_gemini(db_content)
-
