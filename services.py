@@ -6,6 +6,22 @@ from config import base_url
 import re
 from repository import create_record, save_json_db, get_data_from_db
 
+def get_report_by_data(data_str: str) -> None:
+    db_content = get_data_from_db("db/db.json")
+    trovato = False
+
+    for i, record in enumerate(db_content):
+        data_record = record['creationAt']
+        trovato = True
+        
+        numero_follower = len(record['users'])
+        print(f"Trovato record del {data_record}")
+        print(f"In quel giorno avevi: {numero_follower} follower")
+        break
+    if not trovato:
+        print(f"Nessun recordo trovato inq eusta data")
+
+
 def get_last_record_time() -> str:
     "Recupera l'orario di creazione dell'ultimo record salvato."
     db_content = get_data_from_db("db/db.json")
