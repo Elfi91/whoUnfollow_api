@@ -6,29 +6,17 @@
             "emanuelegurini",
             "Vale-Ang",
             "angelicasangregorio29",
-            "branca-c",
             "ilariadil-lgtm",
             "marikaseri2000"
         ],
         "numberOfUsers": 6
     },
     {
-        "id": "65beb18c-2656-433f-a73a-2ce545a19958",
-        "creationAt": "19/12/2025 21:36:38",
+        "id": "199233b1-bfa6-4cab-b279-cc6cdfa26d6e",
+        "creationAt": "25/12/2025 16:26:18",
         "users": [
-            "emanuelegurini",
-            "Vale-Ang",
-            "angelicasangregorio29",
-            "branca-c",
-            "ilariadil-lgtm",
-            "marikaseri2000"
+            "traditore_Github"
         ],
-        "numberOfUsers": 6
-    },
-    {
-        "id": "d4465063-c4b8-44f3-9895-79402ab385f9",
-        "creationAt": "19/12/2025 22:56:33",
-        "users": [],
-        "numberOfUsers": 0
+        "numberOfUsers": 1
     }
 ]

@@ -1,5 +1,5 @@
 from console import print_menu
-from services import get_followers, get_last_record_time, get_statistiche
+from services import get_followers, get_last_record_time, get_statistiche, get_report_by_data
 
 def main() -> None: 
 
@@ -14,7 +14,8 @@ def main() -> None:
             case "2":
                 get_statistiche()
             case "3":
-                print("Di guardare i dati di un giorno specifico")
+                data_input = input("Inserisci la sata da cercare (es. 25/12/2025): ").strip()
+                get_report_by_data(data_input)
                 """
                 1. Seleziono il giorno
                     L'utente scrive una data (es: "19-12-2025").

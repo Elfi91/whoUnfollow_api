@@ -12,14 +12,38 @@ def get_report_by_data(data_str: str) -> None:
 
     for i, record in enumerate(db_content):
         data_record = record['creationAt']
-        trovato = True
+        trovato = False
+
+        # Ci mostra cosa sta confrontando. (Rimuovila quando hai risolto!)
+        print(f"👀 Controllo: '{data_record}' inizia con '{data_str}'?")
+        # -------------------
+
+        if data_record.startswith(data_str):
+            trovato = True
+
+            if i == 0:
+                print("⚠️ Questo è il primo giorno del database: impossibile fare confronti con il passato.")
+                print(f"Follower totali: {record['numberOfUsers']}")
+                break
+
+            if i > 0:
+                record_oggi = record
+                record_ieri = db_content[i - 1]
+                print(f"Confornta i dati del {data_record} con quelli del {record_ieri['creationAt']}")
         
-        numero_follower = len(record['users'])
-        print(f"Trovato record del {data_record}")
-        print(f"In quel giorno avevi: {numero_follower} follower")
-        break
+            set_oggi = set(record_oggi['users'])
+            set_ieri = set(record_ieri['users'])
+
+            nuovi = set_oggi - set_ieri
+            persi = set_ieri - set_oggi
+
+            print(f"👋🏽 Nuovi followers: {len(nuovi)} -> {nuovi}")
+            print(f"😢 Hanno smesso di seguirti: {len(persi)} -> {persi}")
+
+            break
+
     if not trovato:
-        print(f"Nessun recordo trovato inq eusta data")
+        print(f"❌Nessun recordo trovato in questa data")
 
 
 def get_last_record_time() -> str:
@@ -53,12 +77,23 @@ def get_all_follower_from_pages(username: str) -> list [dict]:
     users: list = []
 
     while True: 
-        print(f"Sto contattando pagina:{page}")
-        response = fetch_users(url, page,)
+        print(f"Sto contattando pagina:{page}...")
+        response = fetch_users(url, page)
 
-        users.extend(response.json())
+        if response.status_code != 200:
+            print(f"⚠ ERRORE GITHUB: {response.status_code}")
+            print(f"Messaggio: {response.json()}")
+            break
 
-        if not has_next_page(response):
+        data = response.json()
+
+        if not isinstance(data, list):
+            print(f"⚠️Risposta inattesa da GitHub: {data}")
+            break
+
+        users.extend(data)
+
+        if len(data) == 0 or not has_next_page(response):
             break
 
         page = page + 1
